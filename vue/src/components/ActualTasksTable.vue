@@ -1,32 +1,37 @@
 <template>
-    <div class="flex items-center gap-5 mb-4 mt-10">
-        <div class="flex items-center gap-2 current_time_div">
-            <span>{{ formattedCurrentDate }}</span>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 mt-6">
+        <div class="flex items-center gap-3 current_time_div shadow-sm border border-blue-100">
+            <span class="text-blue-700">{{ formattedCurrentDate }}</span>
         </div>
-        <div class="gap-2 flex">
-            <button class="btn btn_main previous" @click="previousWeek">
-                <span>
-                    < </span>
+        <div class="flex items-center gap-2">
+            <button class="btn btn_secondary hover:bg-slate-200 transition-colors" @click="previousWeek">
+                <span class="text-xl">‹</span>
             </button>
-            <button class="btn btn_main next" @click="nextWeek">></button>
+            <button class="btn btn_secondary hover:bg-slate-200 transition-colors" @click="nextWeek">
+                <span class="text-xl">›</span>
+            </button>
         </div>
     </div>
-    <div class="h-[600px] overflow-x-auto overflow-y-auto">
-        <table class="table-fixed w-full">
-            <thead class="sticky top-0 z-10" style="background-color: var(--main-color); color: var(--text-color);">
-                <tr class="">
-                    <th class="w-24 px-4 py-2">Čas</th>
-                    <th class="px-4 py-2" v-for="day in weekDays" :key="day">{{ day.label }}</th>
+    <div class="h-[700px] overflow-x-auto overflow-y-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+        <table class="table-fixed w-full border-collapse">
+            <thead class="sticky top-0 z-20 bg-slate-50 border-b border-slate-200">
+                <tr>
+                    <th
+                        class="w-20 px-4 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-r border-slate-200">
+                        Čas</th>
+                    <th class="px-4 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider border-r border-slate-200 last:border-r-0"
+                        v-for="day in weekDays" :key="day">{{ day.label }}</th>
                 </tr>
             </thead>
             <tbody class="text-sm">
-                <tr v-for="hour in hours" :key="hour">
-                    <td class="border px-2 py-1 font-medium bg-gray-100 text-center">{{ hour }}</td>
+                <tr v-for="hour in hours" :key="hour" class="border-b border-slate-100 last:border-0">
+                    <td class="px-2 py-3 font-medium bg-slate-50 text-slate-600 text-center border-r border-slate-200">
+                        {{ hour }}</td>
                     <td v-for="day in weekDays" :key="day.index"
-                        class="border px-2 py-6 hover:bg-blue-100 cursor-pointer" @dragover.prevent
-                        @drop="onDrop(day, hour)">
+                        class="px-2 py-4 hover:bg-blue-50/50 cursor-pointer border-r border-slate-100 last:border-r-0 transition-colors"
+                        @dragover.prevent @drop="onDrop(day, hour)">
 
-                        <div v-for="task in tasksForCell(day.index, hour)" :key="task.id">
+                        <div v-for="task in tasksForCell(day.index, hour)" :key="task.id" class="mb-1 last:mb-0">
                             <Task :task="task.task" draggable="true" @dragstart="onDragStart(task.task.id)" />
                         </div>
                     </td>
@@ -34,6 +39,7 @@
             </tbody>
         </table>
     </div>
+
 </template>
 <script setup>
 import { ref, computed, watch } from 'vue'
@@ -183,17 +189,10 @@ const onDragStart = (taskId) => {
 </script>
 <style scoped>
 .current_time_div {
-    color: var(--white);
-    background-color: var(--main-color);
-    font-weight: 700;
-    font-size: 20px;
-    padding: 10px 20px;
-    border-radius: 8px;
-}
-
-.previous,
-.next {
-    font-size: 20px;
-    padding: 6px 30px;
+    background-color: #eff6ff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
 }
 </style>

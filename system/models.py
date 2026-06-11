@@ -9,6 +9,7 @@ class Team(models.Model):
 class UserProfile(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, related_name='userprofile')
     selected_team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
+    demo = models.BooleanField(default=False)
 
 
 class TeamMember(models.Model):

@@ -1,7 +1,9 @@
 <template>
-  <SideBar v-if="showNavbar" />
-  <div class="p-4 px-7 sm:ml-64">
-    <router-view />
+  <div class="min-h-screen box-border p-4">
+    <SideBar v-if="showNavbar" />
+    <div :class="showNavbar ? 'sm:ml-64 md:ml-64' : ''">
+      <router-view />
+    </div>
   </div>
 </template>
 

@@ -7,7 +7,7 @@ export const useMainStore = defineStore('main', {
     state: () => ({
         apiBaseUrl: import.meta.env.MODE === 'production'
             ? '/taskhub'
-            : 'http://localhost:5001',
+            : 'http://localhost:60000',
         user: null,
         selectedTeam: null
     }),
@@ -18,7 +18,7 @@ export const useMainStore = defineStore('main', {
         },
         {
             paths: ['selectedTeam'],
-            storage: localStorage
+            storage: sessionStorage
         }
     ],
     getters: {

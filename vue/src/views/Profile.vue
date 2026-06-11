@@ -1,30 +1,39 @@
 <template>
-    <div class="profile main_div grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- PROFILE PICTURE -->
-        <div class="flex flex-col items-center">
-            <h2 class="section-title">Profilový obrázek</h2>
-
-            <div class="profile-avatar mt-4 flex items-center justify-center">
-                <IconUserCircle class="h-48 w-48 opacity-80" />
-            </div>
-        </div>
-
-        <!-- USER INFO -->
-        <div>
-            <h2 class="section-title">Informace</h2>
-            <div v-if="mainStore.user" class="info-card mt-4 space-y-4">
-                <div>
-                    <span class="info-label">Uživatelské jméno</span>
-                    <p class="info-value">{{ mainStore.user.username }}</p>
+    <div class="relative min-h-[calc(100vh-2rem)] bg-gradient-to-br from-slate-100 via-white to-slate-200">
+        <div class="flex h-full box-border items-center justify-center px-4 py-8">
+            <main class="w-full max-w-4xl rounded-[2rem] bg-white p-8 shadow-[0_30px_70px_-40px_rgba(15,23,42,0.4)] ring-1 ring-slate-200 sm:p-10">
+                <div class="mb-8">
+                    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Profil</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-950 sm:text-4xl">Vaše informace</h2>
                 </div>
 
-                <div v-if="mainStore.user.email">
-                    <span class="info-label">Email</span>
-                    <p class="info-value">{{ mainStore.user.email }}</p>
-                </div>
-            </div>
-        </div>
+                <div class="grid gap-8 md:grid-cols-[0.9fr_1.1fr]">
+                    <div class="rounded-[1.5rem] border border-slate-200 bg-slate-50 p-8 text-center">
+                        <div class="mx-auto flex h-44 w-44 items-center justify-center rounded-full bg-white shadow-sm">
+                            <IconUserCircle class="h-24 w-24 text-slate-500" />
+                        </div>
+                        <p class="mt-6 text-sm font-semibold text-slate-700">Profilový obrázek</p>
+                        <p class="mt-2 text-sm text-slate-500">Váš účet nemá nahraný vlastní avatar.</p>
+                    </div>
 
+                    <div class="rounded-[1.5rem] bg-slate-50 p-8 shadow-sm">
+                        <div v-if="mainStore.user" class="space-y-6">
+                            <div>
+                                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Uživatelské jméno</p>
+                                <p class="mt-2 text-xl font-semibold text-slate-950">{{ mainStore.user.username }}</p>
+                            </div>
+                            <div v-if="mainStore.user.email">
+                                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Email</p>
+                                <p class="mt-2 text-xl font-semibold text-slate-950">{{ mainStore.user.email }}</p>
+                            </div>
+                        </div>
+                        <div v-else class="rounded-2xl bg-white p-6 text-center text-slate-500">
+                            Načítání uživatele...
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
 </template>
 
@@ -33,42 +42,7 @@ import { useMainStore } from '../store'
 import { IconUserCircle } from '@tabler/icons-vue';
 
 const mainStore = useMainStore()
-
-
 </script>
+
 <style scoped>
-.profile {
-    color: var(--white);
-    min-height: 500px;
-    max-height: fit-content;
-}
-
-.section-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    opacity: 0.95;
-}
-
-.profile-avatar {
-    width: 220px;
-    height: 220px;
-    border: 2px dashed rgba(255, 255, 255, 0.4);
-}
-
-.info-card {
-    background: var(--secondary-color);
-    padding: 1.25rem;
-    border-radius: 20px;
-}
-
-.info-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    opacity: 0.7;
-}
-
-.info-value {
-    font-size: 1rem;
-    font-weight: 600;
-}
 </style>

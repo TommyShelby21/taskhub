@@ -1,40 +1,50 @@
 @import 'tailwindcss';
 
 :root {
-    --main-color: #131313;
-    --black: #000000;
-    --secondary-color: rgba(255, 255, 255, 0.08);
-    --grey: rgba(255, 255, 255, 0.2);
+    --main-color: #2563eb; /* Corporate Blue */
+    --black: #0f172a; /* Deep Slate */
+    --secondary-color: #f1f5f9; /* Light Slate */
+    --grey: #64748b; /* Slate Grey */
     --white: #ffffff;
-    --text-color: oklch(96.7% 0.003 264.542);
-    --red: #FF4C4C;
+    --bg-color: #f8fafc;
+    --text-color: #1e293b;
+    --red: #ef4444;
 }
 
-input {
-    font-weight: 500;
+body {
+    background-color: var(--bg-color);
     color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-option {
+input, select, textarea {
     font-weight: 500;
     color: var(--text-color);
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
 }
 
 h2 {
-    font-size: 26px;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: var(--black);
 }
 
 .btn {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    padding: 5px 20px;
-    border-radius: 35px;
-    font-weight: 500;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .btn:hover {
-    opacity: 0.8;
+    filter: brightness(90%);
 }
 
 .btn_main {
@@ -44,17 +54,18 @@ h2 {
 
 .btn_secondary {
     background-color: var(--secondary-color);
-    color: var(--white);
+    color: var(--text-color);
 }
 
 .btn_submit {
-    background-color: var(--grey);
+    background-color: var(--main-color);
     color: var(--white);
 }
 
 .btn_cancel {
     background-color: var(--secondary-color);
-    color: var(--white);
+    color: var(--text-color);
+    border: 1px solid #e2e8f0;
 }
 
 .btn_delete {
@@ -63,12 +74,14 @@ h2 {
 }
 
 .sidebar {
-    background-color: var(--main-color);
+    background-color: var(--white);
+    border-right: 1px solid #e2e8f0;
 }
 
 .main_div {
-    background-color: var(--main-color);
-    color: var(--white);
+    background-color: var(--white);
+    color: var(--text-color);
     padding: 2rem;
-    border-radius: 32px;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }

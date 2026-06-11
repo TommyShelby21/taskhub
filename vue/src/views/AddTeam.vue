@@ -1,23 +1,35 @@
 <template>
-    <div class="add_team">
-        <div>
-            <h2>Vytvořit nový tým</h2>
-        </div>
-        <div class="form mt-5">
-            <div v-if="success">
-                <p class="text-green-600 bg-green-100 p-2 px-4 w-75 border-1 text-center border-green-600">Tým byl
-                    úspešně
-                    vytvořen</p>
-            </div>
-            <div class="grid grid-cols-1 sm:w-1/2">
-                <div class="form-group grid">
-                    <label class="">Název týmu:</label>
-                    <input type="text" placeholder="Zadejte název týmu" class="mt-1" v-model="teamName"></input>
+    <div class="relative min-h-[calc(100vh-2rem)] bg-gradient-to-br from-slate-100 via-white to-slate-200">
+        <div class="flex h-full box-border items-center justify-center px-4 py-8">
+            <main
+                class="w-full max-w-2xl rounded-[2rem] bg-white p-8 shadow-[0_30px_70px_-40px_rgba(15,23,42,0.4)] ring-1 ring-slate-200 sm:p-10">
+                <div class="mb-8">
+                    <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500">Tým</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-950 sm:text-4xl">Vytvořit nový tým</h2>
+                    <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+                        Zadejte název týmu a vytvořte nové pracovní prostředí.
+                    </p>
                 </div>
-                <div class="mt-5">
-                    <button class="btn btn_main" @click="createTeam()">Vytvořit tým</button>
+
+                <div class="space-y-6">
+                    <div v-if="success"
+                        class="rounded-2xl bg-emerald-50 p-4 text-center text-sm text-emerald-700 ring-1 ring-emerald-200">
+                        Tým byl úspěšně vytvořen
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-slate-700">Název týmu</label>
+                            <input type="text" placeholder="Zadejte název týmu"
+                                class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200"
+                                v-model="teamName" />
+                        </div>
+                        <button class="btn btn_main w-full rounded-2xl px-5 py-3 text-base" @click="createTeam()">
+                            Vytvořit tým
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 </template>
@@ -78,8 +90,8 @@ label {
 }
 
 input {
-    background-color: var(--main-color);
-    color: var(--white);
+    background-color: var(--secondary-color);
+    color: var(--black);
     border-radius: 32px;
     padding: 0.5rem 1rem;
     min-height: 44px;

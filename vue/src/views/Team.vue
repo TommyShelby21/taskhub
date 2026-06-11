@@ -45,8 +45,10 @@ const mainStore = useMainStore();
 
 onMounted(() => {
     loadTeamMembers()
+    loadTeam()
 })
 
+const selectedTeam = ref(null)
 const teamMembers = ref([])
 const loadTeamMembers = () => {
     mainStore.api.get(`/team/${route.params.id}/members`).then((response) => {
@@ -58,6 +60,11 @@ const deleteMember = (member) => {
     if (member.leader) {
         alert('Nelze odstranit správce týmu')
     }
+}
+
+const loadTeam = () => {
+    selectedTeam.value = mainStore.selectedTeam
+    console.log(selectedTeam.value)
 }
 
 </script>

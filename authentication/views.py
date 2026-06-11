@@ -1,3 +1,5 @@
+import string
+
 from django.contrib.auth.models import User
 from .serializers import RegisterSerializer
 from system.serializers import UserSerializer
@@ -8,6 +10,8 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, TokenError
 from django.conf import settings
+import random
+
 
 @api_view(['POST'])
 @authentication_classes([])
@@ -59,7 +63,7 @@ def login(request):
             'user': UserSerializer(user).data,
             'message': 'Login successful',
         }
-        print(response.data)
+
         return response
 
     return Response({'error': 'Invalid credentials'}, status=401)
@@ -84,6 +88,50 @@ def logout(request):
 
     response.data = {
         'message': 'Logout successful',
+    }
+
+    return response
+
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
+def create_demo(request):
+    username = "demo_" + "".join(random.choices(string.ascii_letters + string.digits, k=5))
+    password = "".join(random.choices(string.ascii_letters + string.digits, k=10))
+
+    user = User.objects.create_user(
+        username=username,
+        email=f"{username}@example.com",
+        password=password
+    )
+
+    user = authenticate(username=username, password=password)
+
+    response = Response()
+
+    refresh = RefreshToken.for_user(user)
+
+    response.set_cookie(
+        key='access_token',
+        value=str(refresh.access_token),
+        httponly=True,
+        secure=False,         # nastav na True, pokud máš HTTPS (doporučeno)
+        samesite='Lax',
+        max_age=15 * 60      # 15 minut platnost tokenu
+    )
+    response.set_cookie(
+        key='refresh_token',
+        value=str(refresh),
+        httponly=True,
+        secure=False,         # nastav na True, pokud máš HTTPS (doporučeno)
+        samesite='Lax',
+        max_age=7 * 24 * 60 * 60    # 7 dní platnost refresh tokenu
+    )
+
+    response.data = { # Add data about the user
+        'user': UserSerializer(user).data,
+        'message': 'Demo account created successfully',
     }
 
     return response
