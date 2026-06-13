@@ -8,23 +8,27 @@
             <button class="btn btn_main" @click="openTaskModal">Přidat úkol</button>
         </div>
         <!-- Add task Modal -->
-        <Modal v-if="openedTaskModal" @close="openedTaskModal = false" @submit="submitNewTask" :title="'Přidat úkol'">
+        <Modal v-if="openedTaskModal" @close="openedTaskModal = false" @submit="submitNewTask" :title="'Přidat úkol'" :submitButton="true">
             <template #modal-content>
-                <div class="row">
+                <div class="grid gap-4">
                     <div>
-                        <label for="name" class="text-color">Název:</label>
+                        <label for="name" class="block text-sm font-medium text-slate-700">Název:</label>
                         <input type="text" placeholder="Zadejte název úkolu"
-                            class="border-1 border-gray-300 p-1 w-full mt-1" v-model="addTask.name">
+                            class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 mt-1"
+                            v-model="addTask.name">
                     </div>
-                    <div class="mt-2">
-                        <label for="description" class="">Popis:</label>
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-slate-700">Popis:</label>
                         <input type="text" placeholder="Zadejte popis úkolu"
-                            class="border-1 border-gray-300 p-1 w-full mt-1" v-model="addTask.description">
+                            class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 mt-1"
+                            v-model="addTask.description">
                     </div>
-                    <div class="mt-2">
-                        <label>Přiřadit členy</label>
-                        <select class="border-1 border-gray-300 p-1 w-full mt-1" multiple v-model="addTask.users">
-                            <option v-for="member in teamMembers" :value="member.id">{{ member.user.username }}</option>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700">Přiřadit členy</label>
+                        <select
+                            class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 mt-1"
+                            multiple v-model="addTask.users">
+                            <option v-for="member in teamMembers" :key="member.id" :value="member.id">{{ member.user.username }}</option>
                         </select>
                     </div>
                 </div>
@@ -32,12 +36,12 @@
         </Modal>
         <div class="flex gap-5 mt-3">
             <div v-for="task in teamTasks" :key="task.id">
-                <Task :task="task" @draggedTaskId="(id) => draggedTaskId = id" />
+                <Task :task="task" @draggedTaskId="(id) => draggedTaskId = id" @deleteTask="loadTasks" />
             </div>
         </div>
         <!-- Assign members to task Modal -->
         <Modal v-if="openedTaskDetail" @close="openedTaskDetail = false" :title="'Detail úkolu'"
-            @submit="assignMembers()">
+            @submit="assignMembers()" :submitButton="true">
             <template #next-header>
                 <div class="flex cursor-pointer btn btn_main justify-center items-center"
                     @click="addingMembers = !addingMembers">
@@ -46,42 +50,34 @@
                 </div>
             </template>
             <template #modal-content>
-                <div class="grid">
-                    <div class="grid grid-cols-2">
+                <div class="grid gap-4">
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div v-if="openedTask.team_members.length > 0" v-for="team_member in openedTask.team_members"
-                            :key="team_member.id" class="col-span-1">
-                            <IconUserCircle stroke={2} style="width: 40px; height: 40px;"
-                                data-tooltip-target="tooltip-default" />
-                            <div id="tooltip-default" role="tooltip"
-                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
-                                Tooltip content
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
+                            :key="team_member.id" class="col-span-1 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <IconUserCircle stroke={2} class="w-10 h-10 text-slate-600" />
+                            <span class="font-medium text-slate-700">{{ team_member.user.username }}</span>
                         </div>
-                        <div v-else class="col-span-1">
-                            <!-- empty div -->
+                        <div v-else class="col-span-1 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                            <span class="text-slate-500">Žádní členové nejsou přiřazeni.</span>
                         </div>
-                        <div v-if="addingMembers" class="mb-4 w-full ms-auto grid-cols-1">
+                        <div v-if="addingMembers" class="mb-4 w-full">
                             <multiselect v-model="assignedTeamMembers" :options="processedTeamMembers" :multiple="true"
                                 :close-on-select="false" :preserve-search="true" track-by="id" label="label"
                                 placeholder="Vyberte členy týmu" select-label="Vybrat" deselect-label="Odstranit"
-                                class="custom-multiselect">
+                                class="custom-multiselect w-full">
                             </multiselect>
                         </div>
                     </div>
-                    <div v-if="openedTask.team_members.length <= 0" class="mt-4">
-                        <span class="font-bold">Nikdo nepřiřazen</span>
+                    <div>
+                        <span class="block text-xl font-semibold text-slate-900">{{ openedTask.name }}</span>
+                        <p class="mt-2 text-slate-600">{{ openedTask.description }}</p>
                     </div>
-                    <span class="font-semibold mt-4" style="font-size: 20px;">{{ openedTask.name }}</span>
-                    <p>
-                        {{ openedTask.description }}
-                    </p>
                 </div>
             </template>
         </Modal>
         <div class="mt-5">
             <ActualTasksTable :draggedTaskId="draggedTaskId" :teamTasks="teamTasks"
-                @clearDraggedTaskId="draggedTaskId = null" @onDragStart="(id) => draggedTaskId = id" />
+                @clearDraggedTaskId="draggedTaskId = null" @onDragStart="(id) => draggedTaskId = id" @deleteTask="loadTasks" />
         </div>
     </div>
 
@@ -111,7 +107,7 @@ const draggedTaskId = ref(null);
 const teamTasks = ref([])
 function loadTasks() {
     mainStore.api.get(`/team/${route.params.id}/tasks`).then((response) => {
-        teamTasks.value = response.data.tasks;
+        teamTasks.value = response.data.tasks.filter(t => !t.is_hidden)
     });
 }
 
@@ -137,7 +133,12 @@ const addTask = ref({
 function submitNewTask() {
     mainStore.api.post(`/team/${route.params.id}/tasks/add/`, addTask.value).then((response) => {
         loadTasks()
-        openedTaskModal.value = false
+        openedTaskModal.value = false;
+        addTask.value = {
+            name: '',
+            description: '',
+            users: []
+        }
     })
 }
 
@@ -165,7 +166,7 @@ const assignMembers = () => {
         teamMembers: assignedTeamMembers.value.map(member => member.id)
     }
     mainStore.api.post(`/team/${route.params.id}/tasks/assign`, payload).then((response) => {
-        loadData()
+        loadTasks()
         addingMembers.value = false
     })
 }

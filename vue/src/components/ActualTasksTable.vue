@@ -32,7 +32,8 @@
                         @dragover.prevent @drop="onDrop(day, hour)">
 
                         <div v-for="task in tasksForCell(day.index, hour)" :key="task.id" class="mb-1 last:mb-0">
-                            <Task :task="task.task" draggable="true" @dragstart="onDragStart(task.task.id)" />
+                            <Task :task="task.task" draggable="true" @dragstart="onDragStart(task.task.id)"
+                                @deleteTask="handleTaskDelete" />
                         </div>
                     </td>
                 </tr>
@@ -50,7 +51,7 @@ import Task from '../components/Task.vue';
 const mainStore = useMainStore()
 const route = useRoute()
 
-const emit = defineEmits(['clearDraggedTaskId', 'onDragStart'])
+const emit = defineEmits(['clearDraggedTaskId', 'onDragStart', 'deleteTask'])
 
 const props = defineProps({
     draggedTaskId: Number,
@@ -76,7 +77,7 @@ function loadData() {
     if (mainStore.selectedTeam) {
         mainStore.api.get(`/team/${mainStore.selectedTeam}/assigned_tasks`)
             .then((response) => {
-                assignedTasks.value = response.data.assigned_tasks;
+                assignedTasks.value = response.data.assigned_tasks.filter(at => !at.task.is_hidden);
             })
     }
 }
@@ -151,6 +152,11 @@ function onDrop(day, hour) {
 
     // clear the draggedTaskId
     emit('clearDraggedTaskId');
+}
+
+function handleTaskDelete() {
+    loadData()
+    emit('deleteTask')
 }
 
 function tasksForCell(day, hour) {

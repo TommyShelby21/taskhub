@@ -4,12 +4,12 @@
         <div class="fixed inset-0 bg-black/40" @click="$emit('close')"></div>
 
         <!-- Modal Content -->
-        <div class="modal rounded-lg shadow-lg max-w-md p-6 z-10 transition transform duration-300 w-full grid grid-cols-12"
+        <div class="modal rounded-2xl shadow-[0_30px_70px_-40px_rgba(15,23,42,0.4)] max-w-md p-6 z-10 transition transform duration-300 w-full grid grid-cols-12"
             style="max-width: 550px;">
             <div class="col-span-6">
-                <h2 class="text-xl font-bold text-gray-100" v-if="title">{{ title }}</h2>
+                <h2 class="text-xl font-bold text-slate-900" v-if="title">{{ title }}</h2>
             </div>
-            <div class="col-span-6 flex">
+            <div class="col-span-6 flex justify-end">
                 <slot name="next-header"></slot>
             </div>
             <!-- Named slot for modal content -->
@@ -47,7 +47,8 @@ defineProps({
 </script>
 <style scoped>
 .modal {
-    background-color: var(--main-color);
+    background-color: var(--white);
     color: var(--text-color);
+    border: 1px solid #e2e8f0;
 }
 </style>

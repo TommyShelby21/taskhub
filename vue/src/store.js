@@ -9,6 +9,7 @@ export const useMainStore = defineStore('main', {
             ? '/taskhub'
             : 'http://localhost:60000',
         user: null,
+        demoUser: null,
         selectedTeam: null
     }),
     persist: [
@@ -57,6 +58,9 @@ export const useMainStore = defineStore('main', {
         },
         setSelectedTeam(team) {
             this.selectedTeam = team
+        },
+        setDemoUser(demo) {
+            this.demoUser = demo
         },
         setupInterceptors() {
             axios.interceptors.response.use(

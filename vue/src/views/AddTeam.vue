@@ -39,20 +39,6 @@ import { onMounted, ref } from 'vue'
 
 const mainStore = useMainStore();
 
-
-// Load Users
-const users = ref([])
-
-onMounted(() => {
-    loadUsers()
-})
-
-const loadUsers = () => {
-    mainStore.api.get(`/users/`).then((response) => {
-        users.value = response.data.items
-    })
-}
-
 // Add Team
 const teamName = ref('')
 const success = ref(false)

@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken, TokenError
 from django.conf import settings
 import random
+from system.models import Team, TeamMember
 
 
 @api_view(['POST'])
@@ -104,6 +105,16 @@ def create_demo(request):
         username=username,
         email=f"{username}@example.com",
         password=password
+    )
+
+    team = Team.objects.create(
+        name="demo".join(random.choices(string.ascii_letters + string.digits, k=5))
+    )
+
+    TeamMember.objects.create(
+        user=user,
+        leader=True,
+        team=team
     )
 
     user = authenticate(username=username, password=password)

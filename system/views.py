@@ -30,8 +30,9 @@ def users(request):
 @permission_classes([IsAuthenticated])
 def user_detail(request, user_id):
     user = User.objects.get(id=user_id)
+    profile = UserProfile.objects.get(user=user)
 
-    serializer = UserSerializer(user)
+    serializer = UserProfileSerializer(profile)
 
     return Response({'user': serializer.data}, status=200)
 
@@ -76,6 +77,25 @@ def add_team_task(request, team_id):
     task.team_members.add(*task_users)
 
     return Response({'message': 'Task created successfully'}, status=201)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def delete_team_task(request, team_id):
+    team = Team.objects.get(id=team_id)
+
+    task_id = request.data.get("taskId")
+
+    try:
+        task = Task.objects.get(id=task_id, team=team)
+    except Task.DoesNotExist:
+        assigned_task = AssignedTask.objects.get(id=task_id, team=team)
+        task = assigned_task.task
+
+    task.is_hidden = True
+    task.save()
+
+    return Response({'message': 'Task hidden successfully'}, status=200)
 
 
 @api_view(["PUT"])

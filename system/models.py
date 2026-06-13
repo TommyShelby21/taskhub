@@ -23,6 +23,7 @@ class Task(models.Model):
     description = models.TextField(blank=True, null=True)
     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.CASCADE)
     team_members = models.ManyToManyField(TeamMember, null=True, blank=True)
+    is_hidden = models.BooleanField(default=False)
 
 
 class AssignedTask(models.Model):

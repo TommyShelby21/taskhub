@@ -20,7 +20,7 @@
                                 <td class="py-2 border-b border-gray-300 text-center">{{ member.user.username }}</td>
                                 <td class="py-2 border-b border-gray-300 text-center">{{ member.leader ? 'Ano' : 'Ne' }}
                                 </td>
-                                <td class="py-2 border-b border-gray-300 text-center">
+                                <td v-if="member.user.id !== mainStore.user.id" class="py-2 border-b border-gray-300 text-center">
                                     <button type="button" class="btn" @click="deleteMember(member)">
                                         <IconXboxX stroke={2} style="color: red; height: 30px; width: 30px" />
                                     </button>

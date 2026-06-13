@@ -4,7 +4,7 @@
         <span>Otevrit sidebar</span>
     </button>
 
-        <aside :class="[
+    <aside :class="[
         'fixed top-0 left-0 w-64 h-full transition-transform z-50 flex flex-col',
         sidebarOpened ? 'translate-x-0' : '-translate-x-full',
         'sm:translate-x-0' // Always open on sm and up
@@ -20,12 +20,14 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link :to="{ path: '/profile' }" class="flex items-center p-2.5 rounded-lg link transition-colors">
+                    <router-link :to="{ path: '/profile' }"
+                        class="flex items-center p-2.5 rounded-lg link transition-colors">
                         <span class="ms-3">Můj účet</span>
                     </router-link>
                 </li>
                 <li v-if="selectedTeam">
-                    <router-link :to="{ path: '/team' + (selectedTeam ? '/' + selectedTeam : '') }" class="flex items-center p-2.5 rounded-lg link transition-colors">
+                    <router-link :to="{ path: '/team' + (selectedTeam ? '/' + selectedTeam : '') }"
+                        class="flex items-center p-2.5 rounded-lg link transition-colors">
                         <span class="ms-3">Management týmu</span>
                     </router-link>
                 </li>
@@ -35,8 +37,9 @@
                         <span class="ms-3">Organizace úkolů</span>
                     </router-link>
                 </li>
-                <li>
-                    <router-link :to="{ path: '/add-team' }" class="flex items-center p-2.5 rounded-lg link transition-colors">
+                <li v-if="mainStore.demoUser">
+                    <router-link :to="{ path: '/add-team' }"
+                        class="flex items-center p-2.5 rounded-lg link transition-colors">
                         <span class="ms-3">Vytvořit nový tým</span>
                     </router-link>
                 </li>
@@ -47,16 +50,20 @@
                     </button>
                 </li>
             </ul>
-                        <div class="mb-6 px-2">
-                <label for="team" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Vyberte tým</label>
-                <select class="w-full bg-slate-50 border border-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5" v-model="selectedTeam" @change="selectTeam()">
+            <div class="mb-6 px-2">
+                <label for="team"
+                    class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Vyberte tým</label>
+                <select
+                    class="w-full bg-slate-50 border border-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
+                    v-model="selectedTeam" @change="selectTeam()">
                     <option disabled value="null">Vyberte tým...</option>
                     <option v-for="team in availableTeams" :key="team.id" :value="team.id">{{ team.name }}</option>
                 </select>
             </div>
 
             <div class="mt-auto pt-4 border-t border-slate-100">
-                <button @click="logout" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                <button @click="logout"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
                     <span>Odhlásit se</span>
                 </button>
             </div>
@@ -89,9 +96,13 @@ const logout = () => {
         mainStore.setSelectedTeam(null);
     });
 }
-const loadData = () => {
+const loadData = async () => {
     mainStore.api.get('/available_user_teams/').then((response) => {
         availableTeams.value = response.data.teams;
+    });
+    mainStore.api.get(`/user/${mainStore.user.id}/`).then((response) => {
+        mainStore.setSelectedTeam(response.data.user?.selected_team || null)
+        mainStore.setDemoUser(response.data.user?.demo || null)
     });
 }
 
@@ -122,7 +133,8 @@ watch(() => mainStore.user, (newUser) => {
     color: #64748b;
 }
 
-.link:hover, .router-link-active {
+.link:hover,
+.router-link-active {
     color: #2563eb;
     background-color: #eff6ff;
 }
