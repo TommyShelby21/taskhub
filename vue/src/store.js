@@ -6,7 +6,7 @@ import { router } from './router';
 export const useMainStore = defineStore('main', {
     state: () => ({
         apiBaseUrl: import.meta.env.MODE === 'production'
-            ? '/taskhub'
+            ? '/'
             : 'http://localhost:60000',
         user: null,
         demoUser: null,
