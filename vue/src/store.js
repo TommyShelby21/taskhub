@@ -66,7 +66,7 @@ export const useMainStore = defineStore('main', {
             axios.interceptors.response.use(
                 (response) => response,
                 async (error) => {
-                    if (error.config.url.includes('/api/token/refresh/')) {
+                    if (error.config.url.includes('/auth/token/refresh/')) {
                         console.error('Refresh token is invalid, logging out...');
                         this.setUser(null);
                         router.replace({ name: 'Login' });
@@ -77,7 +77,7 @@ export const useMainStore = defineStore('main', {
                         error.config._retry = true;
 
                         try {
-                            await axios.post(this.apiBaseUrl + '/api/token/refresh/', null, {
+                            await axios.post(this.apiBaseUrl + '/auth/token/refresh/', null, {
                                 withCredentials: true
                             });
                             return axios(error.config);

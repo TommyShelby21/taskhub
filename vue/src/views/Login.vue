@@ -99,7 +99,7 @@ const username = ref('');
 const password = ref('');
 
 function loginUser() {
-    mainStore.api.post('/api/login/', {
+    mainStore.api.post('/auth/login/', {
         username: username.value,
         password: password.value,
     },
@@ -117,7 +117,7 @@ function loginUser() {
 }
 
 function demoLogin() {
-    mainStore.api.post('/api/create-demo/').then(response => {
+    mainStore.api.post('/auth/create-demo/').then(response => {
         mainStore.setUser(response.data.user);
         router.push({ name: 'HomePage' });
     }).catch(err => {

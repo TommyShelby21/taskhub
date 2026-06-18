@@ -90,7 +90,7 @@ const toggleSidebar = () => {
 };
 
 const logout = () => {
-    mainStore.api.post('/api/logout/', {}).then(() => {
+    mainStore.api.post('/auth/logout/', {}).then(() => {
         window.location.href = '/login';
         mainStore.setUser(null);
         mainStore.setSelectedTeam(null);

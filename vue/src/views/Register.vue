@@ -63,7 +63,7 @@ const username = ref('');
 const password = ref('');
 
 function registerUser() {
-    mainStore.api.post('/api/register/', {
+    mainStore.api.post('/auth/register/', {
         email: email.value,
         username: username.value,
         password: password.value,

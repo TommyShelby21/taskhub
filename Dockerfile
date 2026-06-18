@@ -18,8 +18,8 @@ RUN pip install --no-cache-dir --retries 5 --default-timeout=100 -r requirements
 # Zkopírujeme celý projekt do kontejneru
 COPY . .
 
-# Otevřeme port (ten, na kterém běží Django - většinou 8000)
-EXPOSE 1000
+# Otevřeme port (ten, na kterém běží Django)
+EXPOSE 60000
 
 # Make entry file executable
 RUN chmod +x /app/entrypoint.prod.sh
