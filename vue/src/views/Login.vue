@@ -18,7 +18,7 @@
                         </div>
                         <div class="space-y-4">
                             <h1 class="text-4xl font-extrabold tracking-tight text-slate-950">
-                                Vítejte v TashHub
+                                Vítejte v TaskHub
                             </h1>
                             <p class="max-w-md text-base leading-7 text-slate-600">
                                 Přihlaste se do svého účtu a sledujte projekty, úkoly a tým v přehledném rozhraní.
@@ -45,7 +45,7 @@
                             Vstup do vašeho účtu
                         </h2>
                         <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
-                            Zadejte svůj email a heslo pro přístup do TashHub.
+                            Zadejte svůj email a heslo pro přístup do TaskHub.
                         </p>
                     </div>
 

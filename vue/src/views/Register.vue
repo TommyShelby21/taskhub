@@ -9,7 +9,7 @@
                         Vytvořte svůj nový účet
                     </h2>
                     <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
-                        Zadejte své údaje a začněte používat TashHub pro efektivní týmovou práci.
+                        Zadejte své údaje a začněte používat TaskHub pro efektivní týmovou práci.
                     </p>
                 </div>
 

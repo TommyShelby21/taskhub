@@ -55,7 +55,7 @@ const routes = [
 ]
 
 export const router = createRouter({
-    history: createWebHistory('/tashhub/'),
+    history: createWebHistory('/'),
     routes,
 })
 
