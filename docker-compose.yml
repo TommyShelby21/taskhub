@@ -21,6 +21,8 @@ services:
       ["/app/entrypoint.prod.sh"]
     volumes:
       - static_volume:/app/staticfiles
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=postgres://tomas:tomas@db:5432/taskhub
       - DJANGO_SETTINGS_MODULE=backend.production
