@@ -3,4 +3,5 @@ __pycache__/
 venv/
 vue/.gitignore
 .env
+certbot/
 .vscode/launch.json
