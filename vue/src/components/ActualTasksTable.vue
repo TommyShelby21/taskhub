@@ -24,16 +24,25 @@
                 </tr>
             </thead>
             <tbody class="text-sm">
-                <tr v-for="hour in hours" :key="hour" class="border-b border-slate-100 last:border-0">
-                    <td class="px-2 py-3 font-medium bg-slate-50 text-slate-600 text-center border-r border-slate-200">
+                <tr v-for="(hour, hourIndex) in hours" :key="hour" class="border-b border-slate-100 last:border-0">
+                    <td class="px-2 font-medium bg-slate-50 text-slate-600 text-center border-r border-slate-200"
+                        :style="{ height: `${ROW_HEIGHT}px` }">
                         {{ hour }}</td>
                     <td v-for="day in weekDays" :key="day.index"
-                        class="px-2 py-4 hover:bg-blue-50/50 cursor-pointer border-r border-slate-100 last:border-r-0 transition-colors"
+                        class="relative p-0 align-top hover:bg-blue-50/50 cursor-pointer border-r border-slate-100 last:border-r-0 transition-colors"
+                        :style="{ height: `${ROW_HEIGHT}px` }"
                         @dragover.prevent @drop="onDrop(day, hour)">
 
-                        <div v-for="task in tasksForCell(day.index, hour)" :key="task.id" class="mb-1 last:mb-0">
-                            <Task :task="task.task" @draggedTaskId="onDragStart" @deleteTask="handleTaskDelete"
-                                @taskUpdated="loadData" />
+                        <div v-for="(task, i) in tasksForCell(day.index, hour)" :key="task.id"
+                            class="absolute z-10 p-1"
+                            :class="{ 'pointer-events-none': draggedTaskId }"
+                            :style="blockStyle(task, i, tasksForCell(day.index, hour).length, hourIndex)">
+                            <Task :task="task.task" fill :subtitle="timeRange(task, hourIndex)"
+                                @draggedTaskId="onDragStart" @deleteTask="handleTaskDelete" @taskUpdated="loadData" />
+                            <div class="absolute bottom-0 left-2 right-2 h-2.5 cursor-ns-resize flex items-center justify-center group"
+                                title="Táhněte pro změnu délky" @pointerdown.stop.prevent="startResize($event, task, hourIndex)">
+                                <span class="h-1 w-8 rounded-full bg-white/60 group-hover:bg-white transition-colors"></span>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -138,6 +147,8 @@ const weekDays = computed(() => {
     return days
 })
 
+const ROW_HEIGHT = 56
+
 const hours = ref([
     '00:00', '01:00', '02:00', '03:00', '04:00',
     '05:00', '06:00', '07:00',
@@ -175,6 +186,62 @@ function tasksForCell(day, hour) {
 
         return taskDay === day && taskHour === hour
     })
+}
+
+// Multi-hour blocks: a task is rendered in its start cell and stretched over `duration` rows
+function durationOf(task) {
+    return task.duration || 1
+}
+
+function blockStyle(task, index, count, hourIndex) {
+    const rows = Math.min(durationOf(task), hours.value.length - hourIndex)
+    return {
+        top: '0px',
+        left: `${(index / count) * 100}%`,
+        width: `${100 / count}%`,
+        height: `${rows * ROW_HEIGHT}px`
+    }
+}
+
+function timeRange(task, hourIndex) {
+    const duration = durationOf(task)
+    if (duration <= 1) return ''
+    const endHour = Math.min(hourIndex + duration, 24)
+    return `${hours.value[hourIndex]} – ${String(endHour).padStart(2, '0')}:00`
+}
+
+// Resize by dragging the handle at the bottom of a block
+function startResize(event, task, hourIndex) {
+    const startY = event.clientY
+    const startDuration = durationOf(task)
+    const maxDuration = Math.min(24, hours.value.length - hourIndex)
+
+    const onMove = (e) => {
+        const delta = Math.round((e.clientY - startY) / ROW_HEIGHT)
+        task.duration = Math.min(maxDuration, Math.max(1, startDuration + delta))
+    }
+    const onUp = () => {
+        window.removeEventListener('pointermove', onMove)
+        window.removeEventListener('pointerup', onUp)
+        if (task.duration !== startDuration) {
+            saveDuration(task)
+        }
+    }
+    window.addEventListener('pointermove', onMove)
+    window.addEventListener('pointerup', onUp)
+}
+
+function saveDuration(task) {
+    mainStore.api.put(`/team/${route.params.id}/tasks/update/`, {
+        taskId: task.task.id,
+        duration: task.duration
+    })
+        .catch((error) => {
+            console.error('Task duration update failed', error)
+        })
+        .finally(() => {
+            loadData()
+        })
 }
 
 const saveTaskChanges = (day, hour, taskId) => {

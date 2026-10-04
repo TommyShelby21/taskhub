@@ -85,3 +85,72 @@ h2 {
     border-radius: 1rem;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
+/* vue-multiselect */
+.custom-multiselect .multiselect__tags {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    min-height: 44px;
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+}
+
+.custom-multiselect .multiselect__placeholder {
+    color: #94a3b8;
+}
+
+.custom-multiselect .multiselect__input,
+.custom-multiselect .multiselect__single {
+    background-color: transparent;
+    color: #1e293b;
+}
+
+.custom-multiselect .multiselect__content-wrapper {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.custom-multiselect .multiselect__option {
+    color: #1e293b;
+}
+
+.custom-multiselect .multiselect__option--highlight {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+.custom-multiselect .multiselect__option--selected {
+    background-color: #f1f5f9;
+    font-weight: 600;
+}
+
+.custom-multiselect .multiselect__tag {
+    background-color: #2563eb;
+    color: #fff;
+    border-radius: 999px;
+}
+
+.custom-multiselect .multiselect__tag-icon {
+    border-radius: 999px;
+    transition: background-color 0.15s;
+}
+
+.custom-multiselect .multiselect__tag-icon::after {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.custom-multiselect .multiselect__tag-icon:hover,
+.custom-multiselect .multiselect__tag-icon:focus {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-multiselect .multiselect__tag-icon:hover::after,
+.custom-multiselect .multiselect__tag-icon:focus::after {
+    color: #fff;
+}
+
+.custom-multiselect .multiselect--disabled {
+    opacity: 0.5;
+}

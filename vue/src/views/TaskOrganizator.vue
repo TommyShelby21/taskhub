@@ -41,12 +41,35 @@
                             v-model="addTask.description">
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-slate-700">Priorita:</label>
+                        <div class="flex gap-2 mt-1">
+                            <button v-for="option in PRIORITIES" :key="option.value" type="button"
+                                @click="addTask.priority = option.value"
+                                class="flex flex-1 items-center justify-center gap-2 rounded-2xl border px-3 py-2.5 text-sm font-medium transition"
+                                :class="addTask.priority === option.value
+                                    ? 'border-slate-400 bg-slate-100 text-slate-900 ring-2 ring-slate-200'
+                                    : 'border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100'">
+                                <span class="h-2.5 w-2.5 rounded-full" :class="option.dotClass"></span>
+                                {{ option.label }}
+                            </button>
+                        </div>
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-slate-700">Přiřadit členy</label>
-                        <select
-                            class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 mt-1"
-                            multiple v-model="addTask.users">
-                            <option v-for="member in teamMembers" :key="member.id" :value="member.id">{{ member.user.username }}</option>
-                        </select>
+                        <multiselect v-model="addTaskMembers" :options="memberOptions" :multiple="true"
+                            :close-on-select="false" :clear-on-select="false" :preserve-search="true"
+                            track-by="id" label="label" placeholder="Vyhledejte a vyberte členy"
+                            select-label="" selected-label="" deselect-label="Odebrat"
+                            class="custom-multiselect w-full mt-1">
+                            <template #option="{ option }">
+                                <div class="flex items-center gap-2">
+                                    <IconUserCircle :size="20" stroke="1.8" class="text-slate-400" />
+                                    <span>{{ option.label }}</span>
+                                </div>
+                            </template>
+                            <template #noResult>Žádný člen neodpovídá hledání.</template>
+                            <template #noOptions>Tým nemá žádné členy.</template>
+                        </multiselect>
                     </div>
                 </div>
             </template>
@@ -106,6 +129,7 @@ import ActualTasksTable from '../components/ActualTasksTable.vue';
 import Task from '../components/Task.vue';
 import { IconUserCircle, IconPlus } from '@tabler/icons-vue';
 import Multiselect from 'vue-multiselect'
+import { PRIORITIES, DEFAULT_PRIORITY } from '../priorities';
 
 const mainStore = useMainStore();
 const route = useRoute();
@@ -143,15 +167,19 @@ const addTask = ref({
     description: '',
     users: []
 })
+const addTaskMembers = ref([])
 function submitNewTask() {
-    mainStore.api.post(`/team/${route.params.id}/tasks/add/`, addTask.value).then((response) => {
+    const payload = { ...addTask.value, users: addTaskMembers.value.map(member => member.id) }
+    mainStore.api.post(`/team/${route.params.id}/tasks/add/`, payload).then((response) => {
         loadTasks()
         openedTaskModal.value = false;
         addTask.value = {
             name: '',
             description: '',
+            priority: DEFAULT_PRIORITY,
             users: []
         }
+        addTaskMembers.value = []
     })
 }
 
@@ -162,6 +190,11 @@ onMounted(() => {
         teamMembers.value = response.data.members;
     });
 })
+// Options for the add-task form use TeamMember ids, which the backend expects
+const memberOptions = computed(() => teamMembers.value.map(member => ({
+    id: member.id,
+    label: member.user.username
+})))
 const processedTeamMembers = computed(() => {
     return teamMembers.value.map(member => ({
         ...member,
@@ -186,58 +219,3 @@ const assignMembers = () => {
 
 
 </script>
-<style scoped>
-::v-deep(.custom-multiselect .multiselect__tags) {
-    background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 1rem;
-    min-height: 44px;
-    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
-}
-
-::v-deep(.custom-multiselect .multiselect__placeholder) {
-    color: #94a3b8;
-}
-
-::v-deep(.custom-multiselect .multiselect__input),
-::v-deep(.custom-multiselect .multiselect__single) {
-    background-color: transparent;
-    color: #1e293b;
-}
-
-::v-deep(.custom-multiselect .multiselect__content-wrapper) {
-    background-color: #ffffff;
-    border: 1px solid #e2e8f0;
-    color: #1e293b;
-    border-radius: 1rem;
-    overflow: hidden;
-}
-
-::v-deep(.custom-multiselect .multiselect__option) {
-    color: #1e293b;
-}
-
-::v-deep(.custom-multiselect .multiselect__option--highlight) {
-    background-color: #eff6ff;
-    color: #2563eb;
-}
-
-::v-deep(.custom-multiselect .multiselect__option--selected) {
-    background-color: #f1f5f9;
-    font-weight: 600;
-}
-
-::v-deep(.custom-multiselect .multiselect__tag) {
-    background-color: #2563eb;
-    color: #fff;
-    border-radius: 999px;
-}
-
-::v-deep(.custom-multiselect .multiselect__tag-icon:hover) {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-::v-deep(.custom-multiselect .multiselect--disabled) {
-    opacity: 0.5;
-}
-</style>

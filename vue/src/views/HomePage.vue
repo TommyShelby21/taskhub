@@ -5,7 +5,7 @@
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 Nástěnka
             </h1>
-            <p class="text-sm text-slate-500">Tady je přehled vašich úkolů pro tento týden.</p>
+            <p class="text-sm text-slate-500">Tady je přehled úkolů týmu pro tento týden.</p>
         </div>
 
         <ActualTasksTable />

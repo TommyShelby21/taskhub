@@ -70,11 +70,15 @@ def add_team_task(request, team_id):
     task_name = request.data.get('name')
     task_description = request.data.get('description', '')
     task_users = request.data.get('users', [])
+    task_priority = request.data.get('priority', Task.PRIORITY_MEDIUM)
 
     if not task_name:
         return Response({'error': 'Task name is required'}, status=400)
 
-    task = Task.objects.create(name=task_name, description=task_description, team=team, created_by=request.user)
+    if task_priority not in dict(Task.PRIORITY_CHOICES):
+        return Response({'error': 'Invalid priority'}, status=400)
+
+    task = Task.objects.create(name=task_name, description=task_description, priority=task_priority, team=team, created_by=request.user)
     task.team_members.add(*task_users)
 
     return Response({'message': 'Task created successfully'}, status=201)
@@ -90,13 +94,21 @@ def update_team_task(request, team_id):
 
     task_name = request.data.get('name')
     task_description = request.data.get('description', '')
+    task_priority = request.data.get('priority', task.priority)
 
     if not task_name:
         return Response({'error': 'Task name is required'}, status=400)
 
+    if task_priority not in dict(Task.PRIORITY_CHOICES):
+        return Response({'error': 'Invalid priority'}, status=400)
+
     task.name = task_name
     task.description = task_description
+    task.priority = task_priority
     task.save()
+
+    if 'users' in request.data:
+        task.team_members.set(request.data.get('users') or [])
 
     serializer = TaskSerializer(task)
 
@@ -132,9 +144,19 @@ def team_tasks_update(request, team_id):
 
     team_member_ids = request.data.get('teamMemberIds', [])
 
-    datetime = request.data.get('datetime')
+    defaults = {}
+    if 'datetime' in request.data:
+        defaults['datetime'] = request.data.get('datetime')
+    if 'duration' in request.data:
+        try:
+            duration = int(request.data.get('duration'))
+        except (TypeError, ValueError):
+            return Response({'error': 'Invalid duration'}, status=400)
+        if not 1 <= duration <= 24:
+            return Response({'error': 'Duration must be between 1 and 24 hours'}, status=400)
+        defaults['duration'] = duration
 
-    assigned_task, created = AssignedTask.objects.update_or_create(task=task, team=team, defaults={'datetime': datetime})
+    assigned_task, created = AssignedTask.objects.update_or_create(task=task, team=team, defaults=defaults)
 
     return Response({'message': 'Task updated successfully'}, status=201)
 
