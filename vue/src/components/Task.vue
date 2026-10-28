@@ -16,31 +16,31 @@
         <template #modal-content>
             <div class="flex flex-col gap-4">
                 <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-slate-700">Název</label>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Název</label>
                     <input type="text" v-model="editedName" placeholder="Název úkolu"
-                        class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200" />
+                        class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-2.5 text-slate-900 dark:text-slate-100 shadow-sm outline-none transition focus:border-slate-400 dark:focus:border-slate-500 focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700" />
                 </div>
                 <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-slate-700">Popis</label>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Popis</label>
                     <textarea v-model="editedDescription" rows="4" placeholder="Popis úkolu"
-                        class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 resize-none"></textarea>
+                        class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-2.5 text-slate-900 dark:text-slate-100 shadow-sm outline-none transition focus:border-slate-400 dark:focus:border-slate-500 focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 resize-none"></textarea>
                 </div>
                 <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-slate-700">Priorita</label>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Priorita</label>
                     <div class="flex gap-2">
                         <button v-for="option in PRIORITIES" :key="option.value" type="button"
                             @click="editedPriority = option.value"
                             class="flex flex-1 items-center justify-center gap-2 rounded-2xl border px-3 py-2 text-sm font-medium transition"
                             :class="editedPriority === option.value
-                                ? 'border-slate-400 bg-slate-100 text-slate-900 ring-2 ring-slate-200'
-                                : 'border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100'">
+                                ? 'border-slate-400 dark:border-slate-500 bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 ring-2 ring-slate-200 dark:ring-slate-700'
+                                : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/60'">
                             <span class="h-2.5 w-2.5 rounded-full" :class="option.dotClass"></span>
                             {{ option.label }}
                         </button>
                     </div>
                 </div>
                 <div class="space-y-2">
-                    <label class="block text-sm font-semibold text-slate-700">Členové</label>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Členové</label>
                     <multiselect v-model="editedMembers" :options="memberOptions" :multiple="true"
                         :close-on-select="false" :clear-on-select="false" :preserve-search="true"
                         track-by="id" label="label" placeholder="Vyhledejte a vyberte členy"
@@ -56,10 +56,10 @@
                         <template #noOptions>Tým nemá žádné členy.</template>
                     </multiselect>
                 </div>
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 border-t border-slate-100 text-xs text-slate-400">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-400">
                     <span v-if="task.created_by" class="flex items-center gap-1">
                         <IconUserCircle :size="14" />
-                        Vytvořil: <span class="font-medium text-slate-500">{{ task.created_by.username }}</span>
+                        Vytvořil: <span class="font-medium text-slate-500 dark:text-slate-400">{{ task.created_by.username }}</span>
                     </span>
                     <span v-if="task.created_at" class="flex items-center gap-1">
                         <IconClock :size="14" />

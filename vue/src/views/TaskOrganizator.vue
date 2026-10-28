@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="flex flex-col gap-1 mb-6">
-            <p class="text-sm font-semibold text-blue-600 uppercase tracking-wider">Tým</p>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Organizace úkolů</h1>
-            <p class="text-sm text-slate-500">Vytvářejte úkoly a přetahujte je do plánu týdne.</p>
+            <p class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Tým</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Organizace úkolů</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Vytvářejte úkoly a přetahujte je do plánu týdne.</p>
         </div>
 
-        <div class="rounded-3xl bg-white border border-slate-200 shadow-sm p-6 mb-6">
+        <div class="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm p-6 mb-6">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-bold text-slate-800">Backlog úkolů</h2>
+                <h2 class="text-base font-bold text-slate-800 dark:text-slate-100">Backlog úkolů</h2>
                 <button class="btn btn_main" @click="openTaskModal">
                     <IconPlus :size="18" stroke="2" />
                     Přidat úkol
@@ -19,7 +19,7 @@
                 <Task v-for="task in teamTasks" :key="task.id" :task="task"
                     @draggedTaskId="(id) => draggedTaskId = id" @deleteTask="loadTasks" @taskUpdated="loadTasks" />
             </div>
-            <div v-else class="rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 px-6 py-10 text-center text-sm text-slate-400">
+            <div v-else class="rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-800/40 px-6 py-10 text-center text-sm text-slate-400">
                 Zatím žádné úkoly. Přidejte první pomocí tlačítka výše.
             </div>
         </div>
@@ -29,33 +29,33 @@
             <template #modal-content>
                 <div class="grid gap-4">
                     <div>
-                        <label for="name" class="block text-sm font-medium text-slate-700">Název:</label>
+                        <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Název:</label>
                         <input type="text" placeholder="Zadejte název úkolu"
-                            class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 mt-1"
+                            class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 shadow-sm outline-none transition focus:border-slate-400 dark:focus:border-slate-500 focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 mt-1"
                             v-model="addTask.name">
                     </div>
                     <div>
-                        <label for="description" class="block text-sm font-medium text-slate-700">Popis:</label>
+                        <label for="description" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Popis:</label>
                         <input type="text" placeholder="Zadejte popis úkolu"
-                            class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 shadow-sm outline-none transition focus:border-slate-400 focus:ring-2 focus:ring-slate-200 mt-1"
+                            class="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 py-3 text-slate-900 dark:text-slate-100 shadow-sm outline-none transition focus:border-slate-400 dark:focus:border-slate-500 focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 mt-1"
                             v-model="addTask.description">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Priorita:</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200">Priorita:</label>
                         <div class="flex gap-2 mt-1">
                             <button v-for="option in PRIORITIES" :key="option.value" type="button"
                                 @click="addTask.priority = option.value"
                                 class="flex flex-1 items-center justify-center gap-2 rounded-2xl border px-3 py-2.5 text-sm font-medium transition"
                                 :class="addTask.priority === option.value
-                                    ? 'border-slate-400 bg-slate-100 text-slate-900 ring-2 ring-slate-200'
-                                    : 'border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100'">
+                                    ? 'border-slate-400 dark:border-slate-500 bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-slate-100 ring-2 ring-slate-200 dark:ring-slate-700'
+                                    : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/60'">
                                 <span class="h-2.5 w-2.5 rounded-full" :class="option.dotClass"></span>
                                 {{ option.label }}
                             </button>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700">Přiřadit členy</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200">Přiřadit členy</label>
                         <multiselect v-model="addTaskMembers" :options="memberOptions" :multiple="true"
                             :close-on-select="false" :clear-on-select="false" :preserve-search="true"
                             track-by="id" label="label" placeholder="Vyhledejte a vyberte členy"
@@ -89,12 +89,12 @@
                 <div class="grid gap-4">
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div v-if="openedTask.team_members.length > 0" v-for="team_member in openedTask.team_members"
-                            :key="team_member.id" class="col-span-1 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <IconUserCircle :size="32" stroke="1.8" class="text-slate-600" />
-                            <span class="font-medium text-slate-700">{{ team_member.user.username }}</span>
+                            :key="team_member.id" class="col-span-1 flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-4">
+                            <IconUserCircle :size="32" stroke="1.8" class="text-slate-600 dark:text-slate-300" />
+                            <span class="font-medium text-slate-700 dark:text-slate-200">{{ team_member.user.username }}</span>
                         </div>
-                        <div v-else class="col-span-1 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                            <span class="text-slate-500">Žádní členové nejsou přiřazeni.</span>
+                        <div v-else class="col-span-1 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-4">
+                            <span class="text-slate-500 dark:text-slate-400">Žádní členové nejsou přiřazeni.</span>
                         </div>
                         <div v-if="addingMembers" class="mb-4 w-full">
                             <multiselect v-model="assignedTeamMembers" :options="processedTeamMembers" :multiple="true"
@@ -105,14 +105,14 @@
                         </div>
                     </div>
                     <div>
-                        <span class="block text-xl font-semibold text-slate-900">{{ openedTask.name }}</span>
-                        <p class="mt-2 text-slate-600">{{ openedTask.description }}</p>
+                        <span class="block text-xl font-semibold text-slate-900 dark:text-slate-100">{{ openedTask.name }}</span>
+                        <p class="mt-2 text-slate-600 dark:text-slate-300">{{ openedTask.description }}</p>
                     </div>
                 </div>
             </template>
         </Modal>
 
-        <div class="rounded-3xl bg-white border border-slate-200 shadow-sm p-6">
+        <div class="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-sm p-6">
             <ActualTasksTable :draggedTaskId="draggedTaskId" :teamTasks="teamTasks"
                 @clearDraggedTaskId="draggedTaskId = null" @onDragStart="(id) => draggedTaskId = id" @deleteTask="loadTasks" />
         </div>

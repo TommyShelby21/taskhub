@@ -16,7 +16,7 @@ services:
 
   backend:
     build:
-      context: .
+      context: ./django
     command:
       ["/app/entrypoint.prod.sh"]
     volumes:
@@ -25,7 +25,7 @@ services:
       - .env
     environment:
       - DATABASE_URL=postgres://tomas:tomas@db:5432/taskhub
-      - DJANGO_SETTINGS_MODULE=backend.production
+      - DJANGO_SETTINGS_MODULE=core.production
     depends_on:
       - db
     expose:

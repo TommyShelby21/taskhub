@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-slate-50 box-border">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 box-border">
     <SideBar v-if="showNavbar" />
     <div :class="showNavbar ? 'sm:ml-72 px-4 pb-4 pt-20 sm:px-8 sm:pb-8 sm:pt-8' : ''">
       <div :class="showNavbar ? 'max-w-6xl mx-auto' : ''">

@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* dark: utilities follow the .dark class on <html> (toggled in theme.js) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
     --main-color: #2563eb; /* Corporate Blue */
     --black: #0f172a; /* Deep Slate */
@@ -9,6 +12,17 @@
     --bg-color: #f8fafc;
     --text-color: #1e293b;
     --red: #ef4444;
+    --border-color: #e2e8f0;
+}
+
+:root.dark {
+    color-scheme: dark;
+    --black: #f8fafc;
+    --secondary-color: #1e293b;
+    --grey: #94a3b8;
+    --bg-color: #020617;
+    --text-color: #e2e8f0;
+    --border-color: #334155;
 }
 
 body {
@@ -20,7 +34,7 @@ body {
 input, select, textarea {
     font-weight: 500;
     color: var(--text-color);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
 }
@@ -65,7 +79,7 @@ h2 {
 .btn_cancel {
     background-color: var(--secondary-color);
     color: var(--text-color);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
 }
 
 .btn_delete {
@@ -75,7 +89,7 @@ h2 {
 
 .sidebar {
     background-color: var(--white);
-    border-right: 1px solid #e2e8f0;
+    border-right: 1px solid var(--border-color);
 }
 
 .main_div {
@@ -88,7 +102,7 @@ h2 {
 /* vue-multiselect */
 .custom-multiselect .multiselect__tags {
     background-color: #f8fafc;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     border-radius: 1rem;
     min-height: 44px;
     padding: 0.5rem 2.5rem 0.5rem 0.75rem;
@@ -106,7 +120,7 @@ h2 {
 
 .custom-multiselect .multiselect__content-wrapper {
     background-color: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     color: #1e293b;
     border-radius: 1rem;
     overflow: hidden;
@@ -153,4 +167,42 @@ h2 {
 
 .custom-multiselect .multiselect--disabled {
     opacity: 0.5;
+}
+
+.dark .main_div,
+.dark .sidebar {
+    background-color: #0f172a;
+}
+
+.dark .custom-multiselect .multiselect__tags,
+.dark .custom-multiselect .multiselect__input {
+    background-color: #1e293b;
+}
+
+.dark .custom-multiselect .multiselect__input,
+.dark .custom-multiselect .multiselect__single,
+.dark .custom-multiselect .multiselect__option {
+    color: #e2e8f0;
+}
+
+.dark .custom-multiselect .multiselect__placeholder {
+    color: #64748b;
+}
+
+.dark .custom-multiselect .multiselect__content-wrapper {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+.dark .custom-multiselect .multiselect__option--highlight {
+    background-color: rgb(59 130 246 / 0.15);
+    color: #93c5fd;
+}
+
+.dark .custom-multiselect .multiselect__option--selected {
+    background-color: #1e293b;
+}
+
+.dark .custom-multiselect .multiselect__spinner {
+    background-color: #1e293b;
 }

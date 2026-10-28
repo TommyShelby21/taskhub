@@ -12,6 +12,10 @@ jobs:
   backend-test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: django
+
     services:
       postgres:
         image: postgres:15
@@ -36,6 +40,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip" # Zrychlí opakované běhy
+          cache-dependency-path: django/requirements.txt
 
       - name: Nainstaluj závislosti
         run: |
@@ -45,6 +50,6 @@ jobs:
       - name: Spust testy
         env:
           DATABASE_URL: postgres://tomas:tomas@localhost:5432/taskhub
-          DJANGO_SETTINGS_MODULE: backend.production
+          DJANGO_SETTINGS_MODULE: core.production
         run:
           python manage.py test

@@ -1,35 +1,35 @@
 <template>
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 mt-6">
-        <div class="flex items-center gap-3 current_time_div shadow-sm border border-blue-100">
-            <span class="text-blue-700">{{ formattedCurrentDate }}</span>
+        <div class="flex items-center gap-3 current_time_div shadow-sm border border-blue-100 dark:border-blue-500/20">
+            <span class="text-blue-700 dark:text-blue-300">{{ formattedCurrentDate }}</span>
         </div>
         <div class="flex items-center gap-2">
-            <button class="btn btn_secondary hover:bg-slate-200 transition-colors" @click="previousWeek">
+            <button class="btn btn_secondary hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" @click="previousWeek">
                 <span class="text-xl">‹</span>
             </button>
-            <button class="btn btn_secondary hover:bg-slate-200 transition-colors" @click="nextWeek">
+            <button class="btn btn_secondary hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" @click="nextWeek">
                 <span class="text-xl">›</span>
             </button>
         </div>
     </div>
-    <div class="h-[700px] overflow-x-auto overflow-y-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+    <div class="h-[700px] overflow-x-auto overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-900">
         <table class="table-fixed w-full border-collapse">
-            <thead class="sticky top-0 z-20 bg-slate-50 border-b border-slate-200">
+            <thead class="sticky top-0 z-20 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
                 <tr>
                     <th
-                        class="w-20 px-4 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-r border-slate-200">
+                        class="w-20 px-4 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider bg-slate-50 dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700">
                         Čas</th>
-                    <th class="px-4 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider border-r border-slate-200 last:border-r-0"
+                    <th class="px-4 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-r border-slate-200 dark:border-slate-700 last:border-r-0"
                         v-for="day in weekDays" :key="day">{{ day.label }}</th>
                 </tr>
             </thead>
             <tbody class="text-sm">
-                <tr v-for="(hour, hourIndex) in hours" :key="hour" class="border-b border-slate-100 last:border-0">
-                    <td class="px-2 font-medium bg-slate-50 text-slate-600 text-center border-r border-slate-200"
+                <tr v-for="(hour, hourIndex) in hours" :key="hour" class="border-b border-slate-100 dark:border-slate-800 last:border-0">
+                    <td class="px-2 font-medium bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-center border-r border-slate-200 dark:border-slate-700"
                         :style="{ height: `${ROW_HEIGHT}px` }">
                         {{ hour }}</td>
                     <td v-for="day in weekDays" :key="day.index"
-                        class="relative p-0 align-top hover:bg-blue-50/50 cursor-pointer border-r border-slate-100 last:border-r-0 transition-colors"
+                        class="relative p-0 align-top hover:bg-blue-50/50 dark:hover:bg-blue-500/10 cursor-pointer border-r border-slate-100 dark:border-slate-800 last:border-r-0 transition-colors"
                         :style="{ height: `${ROW_HEIGHT}px` }"
                         @dragover.prevent @drop="onDrop(day, hour)">
 
@@ -267,5 +267,9 @@ const onDragStart = (taskId) => {
     font-size: 1rem;
     padding: 0.75rem 1.25rem;
     border-radius: 0.75rem;
+}
+
+.dark .current_time_div {
+    background-color: rgb(59 130 246 / 0.1);
 }
 </style>

@@ -25,7 +25,7 @@ EXPOSE 60000
 RUN chmod +x /app/entrypoint.prod.sh
 
 # Nastavíme proměnné prostředí, aby Django používalo správné nastavení
-ENV DJANGO_SETTINGS_MODULE=backend.production
+ENV DJANGO_SETTINGS_MODULE=core.production
 
 # Spustíme Django server pomocí Gunicorn (produkční server)
 CMD ["/app/entrypoint.prod.sh"]

@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="flex flex-col gap-1 mb-6">
-            <p class="text-sm font-semibold text-blue-600 uppercase tracking-wider">{{ formattedDate }}</p>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <p class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">{{ formattedDate }}</p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
                 Nástěnka
             </h1>
-            <p class="text-sm text-slate-500">Tady je přehled úkolů týmu pro tento týden.</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Tady je přehled úkolů týmu pro tento týden.</p>
         </div>
 
         <ActualTasksTable />
