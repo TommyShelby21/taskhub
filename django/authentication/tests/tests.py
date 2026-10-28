@@ -60,6 +60,10 @@ class LoginTests(APITestCase):
         })
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_login_missing_fields_returns_400(self):
+        response = self.client.post('/auth/login/', {'username': '', 'password': ''})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 class LogoutTests(APITestCase):
     def test_logout_clears_cookies_and_returns_message(self):

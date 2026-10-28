@@ -67,8 +67,14 @@
                                 placeholder="Zadejte své heslo" v-model="password" @keyup.enter="loginUser" />
                         </div>
 
-                        <button type="button" class="btn btn_submit w-full rounded-2xl text-base" @click="loginUser()">
-                            Přihlásit se
+                        <p v-if="errorMessage" role="alert"
+                            class="rounded-2xl border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/50 px-4 py-3 text-sm text-red-700 dark:text-red-300">
+                            {{ errorMessage }}
+                        </p>
+
+                        <button type="button" class="btn btn_submit w-full rounded-2xl text-base disabled:opacity-60"
+                            :disabled="loading" @click="loginUser()">
+                            {{ loading ? 'Přihlašuji...' : 'Přihlásit se' }}
                         </button>
                     </div>
 
@@ -101,32 +107,64 @@ const router = useRouter();
 
 const username = ref('');
 const password = ref('');
+const errorMessage = ref('');
+const loading = ref(false);
+
+function loginErrorMessage(err) {
+    if (!err.response) {
+        return 'Server neodpovídá, zkuste to prosím později.';
+    }
+    if (err.response.status === 400) {
+        return 'Vyplňte email i heslo.';
+    }
+    if (err.response.status === 401) {
+        return 'Nesprávný email nebo heslo.';
+    }
+    return 'Přihlášení se nezdařilo, zkuste to prosím znovu.';
+}
 
 function loginUser() {
+    if (loading.value) return;
+
+    errorMessage.value = '';
+
+    if (!username.value.trim() || !password.value) {
+        errorMessage.value = 'Vyplňte email i heslo.';
+        return;
+    }
+
+    loading.value = true;
+
     mainStore.api.post('/auth/login/', {
-        username: username.value,
+        username: username.value.trim(),
         password: password.value,
     },
     ).then(response => {
-        mainStore.api.get(`/user/${response.data.user.id}/`)
+        return mainStore.api.get(`/user/${response.data.user.id}/`)
             .then((response) => {
-                console.log(response.data.items)
                 mainStore.setUser(response.data.items);
                 router.push({ name: 'HomePage' });
             }).catch(err => {
                 console.error('Chyba při načítání profilu uživatele:', err);
+                errorMessage.value = 'Přihlášení proběhlo, ale nepodařilo se načíst profil. Zkuste to prosím znovu.';
             });
     }).catch(err => {
         console.error(err)
+        errorMessage.value = loginErrorMessage(err);
+    }).finally(() => {
+        loading.value = false;
     })
 }
 
 function demoLogin() {
+    errorMessage.value = '';
+
     mainStore.api.post('/auth/create-demo/').then(response => {
         mainStore.setUser(response.data.user);
         router.push({ name: 'HomePage' });
     }).catch(err => {
         console.error('Chyba při vytvoření demo účtu:', err);
+        errorMessage.value = 'Demo účet se nepodařilo vytvořit, zkuste to prosím znovu.';
     });
 }
 

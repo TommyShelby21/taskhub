@@ -75,6 +75,11 @@ export const useMainStore = defineStore('main', {
                         return Promise.reject(error);
                     }
 
+                    // Wrong credentials on login are not an expired token, let the caller handle it
+                    if (error.config.url.includes('/auth/login/')) {
+                        return Promise.reject(error);
+                    }
+
                     if ((error.response?.status === 401 || error.response?.status === 403) && !error.config._retry) {
                         error.config._retry = true;
 

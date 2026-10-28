@@ -23,10 +23,10 @@ main() {
 
     if [[ "$bef_commit_hash" == "$af_commit_hash" ]]; then
         echo "stejné"
-    else 
+    else
         echo "jiné"
     fi
-    
+
     echo "Buildim a spoustim kontejnery"
 
     docker compose up -d --build
@@ -43,7 +43,7 @@ main() {
 
         # fail: when HTTP error return non null exit code
         # s: silent, S: show error, o: web content into /dev/null
-        if curl -fsS -o /dev/null eq&& curl -fsS -o /dev/null https://taskhub.tomas-dev.cz/api/admin/login/; then
+        if curl -fsS -o /dev/null https://taskhub.tomas-dev.cz/ && curl -fsS -o /dev/null https://taskhub.tomas-dev.cz/api/admin/login/; then
             echo "Webovka je funkční"
 
             return 0 # Stops whole function main

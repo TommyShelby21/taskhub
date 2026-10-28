@@ -38,10 +38,13 @@ def login(request):
     password = request.data.get('password')
     username = request.data.get('username')
 
+    if not username or not password:
+        return Response({'error': 'Username and password are required'}, status=400)
+
     user = authenticate(username=username, password=password)
-    user_data = UserSerializer(user).data
 
     if user is not None:
+        user_data = UserSerializer(user).data
         response = Response()
 
         refresh = RefreshToken.for_user(user)
