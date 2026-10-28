@@ -51,5 +51,6 @@ jobs:
         env:
           DATABASE_URL: postgres://tomas:tomas@localhost:5432/taskhub
           DJANGO_SETTINGS_MODULE: core.production
+          SECRET_KEY: ci-only-not-a-real-secret # production.py vyžaduje SECRET_KEY; pro testy stačí dummy hodnota
         run:
           python manage.py test
