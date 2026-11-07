@@ -33,15 +33,20 @@ A full-stack application for planning team work: created tasks are dragged into 
 Production runs on a VPS via Docker Compose. The [deploys/deploy.sh](deploys/deploy.sh) script pulls the latest version, builds and restarts the containers, removes old images, and then checks up to 30 times that the site is responding. If it doesn't respond, it prints the backend logs.
 
 
-## Architecture decision
-DJANGO
- + Django Admin - easy administration
- + Easy REST structure
- + Great for small to mid apps
+## Architecture decisions
 
-Vue 
- + Easy and fast framework for fast building
- + Best for smaller apps
+### Django + Django REST Framework
+- **Why:** built-in admin, ORM and auth out of the box; DRF makes a REST API with little boilerplate.
+- **Trade-off:** heavier than e.g. FastAPI; for this app size it's not a problem.
+- **Alternative considered:** FastAPI
 
-JWT
- + I wanted to try and learn it
+### Vue 3 SPA (separate from the backend)
+- **Why:** fast to build with, I use it at work, Pinia keeps calendar state simple.
+- **Trade-off:** two deployables instead of one; solved by nginx serving both.
+
+### JWT authentication (SimpleJWT)
+- **Why:** I wanted to learn token-based auth hands-on.
+
+### Deployment
+- **Now:** Bash script with health check on a VPS.
+- **Next step:** automatic deploy from GitHub Actions after green tests.
