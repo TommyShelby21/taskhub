@@ -74,3 +74,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script:
             cd taskhub && ./deploys/deploy.sh
+      - name: Debug klíče (dočasně)
+        env:
+          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "Délka: ${#KEY}"
+          printf '%s\n' "$KEY" > /tmp/k && chmod 600 /tmp/k
+          ssh-keygen -lf /tmp/k || echo "NEPLATNÝ KLÍČ"
+          rm /tmp/k
