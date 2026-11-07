@@ -1,21 +1,33 @@
 # TaskHub
 
-Full-stack aplikace pro plánování týmové práce: úkoly z backlogu se přetahují do týdenního kalendáře, přiřazují se členům týmu a dají se roztáhnout na víc hodin. Projekt vznikl jako showcase do portfolia.
-
-**Live demo:** [taskhub.tomas-dev.cz](https://taskhub.tomas-dev.cz). Na přihlašovací stránce klikněte na **Demo režim** a aplikace vám založí dočasný účet s vlastním týmem, bez registrace.
+A full-stack application for planning team work: created tasks are dragged into a weekly calendar, assigned to team members, and can be stretched across multiple hours. The project was built as a portfolio showcase.
 
 
-## Technologie
+**Live demo:** [taskhub.tomas-dev.cz](https://taskhub.tomas-dev.cz). On the login page, click **Demo režim** (Demo mode) and the app will create a temporary account with its own team for you, no registration required.
 
-| Vrstva | Použito |
+
+## Screenshots
+
+**Dashboard** – weekly calendar with team tasks
+
+![Dashboard](media/dashboard.png)
+
+**Login page**
+
+![Login page](media/login.png)
+
+
+## Tech stack
+
+| Layer | Used |
 |---|---|
 | Frontend | Vue 3 (Composition API), Vue Router, Pinia, Tailwind CSS 4, Vite |
 | Backend | Django 5, Django REST Framework, SimpleJWT |
-| Databáze | PostgreSQL 15 |
-| Infrastruktura | Docker Compose, nginx (reverse proxy + TLS přes Let's Encrypt), Gunicorn |
-| CI/CD | GitHub Actions (testy proti Postgres service), deploy skript v Bashi |
+| Database | PostgreSQL 15 |
+| Infrastructure | Docker Compose, nginx (reverse proxy + TLS via Let's Encrypt), Gunicorn |
+| CI/CD | GitHub Actions (tests against a Postgres service), Bash deploy script |
 
 
-## Nasazení
+## Deployment
 
-Produkce běží na VPS přes Docker Compose. Skript [deploys/deploy.sh](deploys/deploy.sh) stáhne poslední verzi, sestaví a restartuje kontejnery, smaže staré images a pak až 30× ověří, že web odpovídá. Pokud neodpoví, vypíše logy backendu.
+Production runs on a VPS via Docker Compose. The [deploys/deploy.sh](deploys/deploy.sh) script pulls the latest version, builds and restarts the containers, removes old images, and then checks up to 30 times that the site is responding. If it doesn't respond, it prints the backend logs.
