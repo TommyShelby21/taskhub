@@ -31,3 +31,17 @@ A full-stack application for planning team work: created tasks are dragged into 
 ## Deployment
 
 Production runs on a VPS via Docker Compose. The [deploys/deploy.sh](deploys/deploy.sh) script pulls the latest version, builds and restarts the containers, removes old images, and then checks up to 30 times that the site is responding. If it doesn't respond, it prints the backend logs.
+
+
+## Architecture decision
+DJANGO
+ + Django Admin - easy administration
+ + Easy REST structure
+ + Great for small to mid apps
+
+Vue 
+ + Easy and fast framework for fast building
+ + Best for smaller apps
+
+JWT
+ + I wanted to try and learn it
